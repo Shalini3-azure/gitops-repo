@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: otel-ebpf-agent
+  labels:
+    app: otel-ebpf-agent
+spec:
+  selector:
+    matchLabels:
+      app: otel-ebpf-agent
+  template:
+    metadata:
+      labels:
+        app: otel-ebpf-agent
+    spec:
+      serviceAccountName: otel-ebpf-agent-sa
+      hostPID: true
+      hostNetwork: true
+      tolerations:
+        - operator: Exists
+      volumes:
+        - name: bpffs
+          hostPath:
+            path: /sys/fs/bpf
+        - name: cgroup2
+          hostPath:
+            path: /sys/fs/cgroup
+      containers:
+        - name: otel-ebpf-agent
+          # Use your ACR image you pushed earlier:
+          image: observabilityacr9425.azurecr.io/ebpf-collector:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector.observability.svc:4317"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "service=otel-ebpf-agent"
+          volumeMounts:
+            - name: bpffs
+              mountPath: /sys/fs/bpf
+            - name: cgroup2
+              mountPath: /sys/fs/cgroup
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1

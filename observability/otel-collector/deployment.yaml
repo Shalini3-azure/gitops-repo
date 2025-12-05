@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  labels:
+    app: otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+        - name: otel-collector
+          image: public.ecr.aws/aws-observability/aws-otel-collector:latest
+          # you can replace above with an otel collector image you prefer
+          imagePullPolicy: IfNotPresent
+          args: ["--config=/conf/otel-collector-config.yaml"]
+          ports:
+            - containerPort: 4317   # OTLP gRPC
+            - containerPort: 55681  # OTLP HTTP (optional)
+            - containerPort: 8888   # Prometheus metrics (if configured)
+          volumeMounts:
+            - mountPath: /conf
+              name: config-volume
+      volumes:
+        - name: config-volume
+          configMap:
+            name: otel-collector-config
