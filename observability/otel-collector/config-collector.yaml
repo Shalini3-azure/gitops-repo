@@ -21,8 +21,8 @@ data:
       batch:
 
     exporters:
-      logging:
-        loglevel: info
+      debug:
+        verbosity: detailed
       prometheus:
         endpoint: "0.0.0.0:8888"
       # Tempo exporter example placeholder: fill with your tempo address if installed
