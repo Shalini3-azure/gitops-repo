@@ -34,8 +34,8 @@ data:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [logging]
+          exporters: [debug]
         metrics:
           receivers: [prometheus, otlp]
           processors: [batch]
-          exporters: [prometheus, logging]
+          exporters: [prometheus, debug]
