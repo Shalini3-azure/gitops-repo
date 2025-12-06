@@ -24,7 +24,7 @@ data:
       debug:
         verbosity: detailed
       prometheus:
-        endpoint: "0.0.0.0:8888"
+        endpoint: "0.0.0.0:8889"
       # Tempo exporter example placeholder: fill with your tempo address if installed
       # tempo:
       #   endpoint: "tempo:4317"
