@@ -16,6 +16,8 @@ spec:
       serviceAccountName: otel-ebpf-agent-sa
       hostPID: true
       hostNetwork: true
+      imagePullSecrets:
+        - name: ghcr
       tolerations:
         - operator: Exists
       volumes:
