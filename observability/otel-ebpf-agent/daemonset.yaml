@@ -30,7 +30,7 @@ spec:
       containers:
         - name: otel-ebpf-agent
           # Use your ACR image you pushed earlier:
-          image: ghcr.io/open-telemetry/ebpf-agent:latest
+          image: ghcr.io/open-telemetry/opentelemetry-ebpf/ebpf-agent:0.11.1
           imagePullPolicy: IfNotPresent
           securityContext:
             privileged: true
